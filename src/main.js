@@ -10,4 +10,4 @@ import * as jquery from 'jquery'
 
 
 createApp(App).use(store).use(router).mount('#app')
-Vue.prototype.jquery = jquery;
+Vue.prototype.jquery = jquery
