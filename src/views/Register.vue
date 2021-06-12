@@ -10,7 +10,7 @@
                     </h1>
                     <div class="card-body">
                         
-                        <Form @submit="onsubmit()">
+                        <Form @submit="onSubmit">
                             <div class="form-group">
                                 <label for="">ชื่อผู้ใช้งาน :</label>
                                 <Field type="text" name="userBox"
@@ -25,7 +25,7 @@
                                 <Field type="password" name="passwordBox"
                                     v-bind="field"
                                     v-model.trim="form.u_password"
-                                    :rules="isRequired"
+                                    :rules="passwordRules"
                                     class="form-control"/>
                                 <ErrorMessage name="passwordBox" />
                             </div>
@@ -69,6 +69,8 @@
 
 <script>
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import VueAxios from "vue-axios";
+import axios from "axios";
 
 export default {
     data() {
@@ -93,12 +95,40 @@ export default {
             }
             return 'This is required';
         },
+        passwordRules(value){
+            if (value && value.trim()) {
+                if(value.length > 7){
+                    return true;
+                }
+                return 'Your password must be between 8 and 30 characters.';
+            }
+            
+            return 'This is required';
+        },
         // บันทึกข้อมูลลงทะเบียน
-        onsubmit(){
-            console.log(this.form)
+        onSubmit() {
+            try{
+                axios
+                    .post("api/account/register", this.form)
+                    // .then(response => this.onReset())
+                    // .catch(err => (this.errorMessage = err.response.data.message));
+            }catch (ex) {
+                console.log(ex);
+            }
+        },
+        // ล้างค่า Form
+        onReset() {
+            this.errorMessage = null;
+            this.$validator.reset();
+            this.form = {
+                u_username: "",
+                u_password: "",
+                u_firstname: "",
+                u_lastname: ""
+            };
         }
-        
-    }
+                
+            }
     
 };
 </script>
