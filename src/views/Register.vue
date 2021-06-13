@@ -9,7 +9,9 @@
                         REGISTER
                     </h1>
                     <div class="card-body">
-                        
+                        <div v-if="errorMessage" class="alert alert-danger text-center">
+                            {{ errorMessage}}
+                        </div>
                         <Form @submit="onSubmit">
                             <div class="form-group">
                                 <label for="">ชื่อผู้ใช้งาน :</label>
@@ -47,7 +49,7 @@
                                     class="form-control"/>
                                 <ErrorMessage name="lastnameBox" />
                             </div>
-
+                            
                             <div class="form-group buttons">
                                 <button type="submit" class="btn btn-info btn-block">
                                     ลงทะเบียน
@@ -80,7 +82,8 @@ export default {
                 u_password: "",
                 u_firstname: "",
                 u_lastname: ""
-            }
+            },
+            errorMessage: ""
         };
     },
     components: {
@@ -109,9 +112,9 @@ export default {
         onSubmit() {
             try{
                 axios
-                    .post("api/account/register", this.form)
-                    // .then(response => this.onReset())
-                    // .catch(err => (this.errorMessage = err.response.data.message));
+                    .post("api/account/register",this.form)
+                    .then(response => {this.onReset()})
+                    .catch(err => {this.errorMessage = err.response.data.message});
             }catch (ex) {
                 console.log(ex);
             }
@@ -119,7 +122,6 @@ export default {
         // ล้างค่า Form
         onReset() {
             this.errorMessage = null;
-            this.$validator.reset();
             this.form = {
                 u_username: "",
                 u_password: "",
