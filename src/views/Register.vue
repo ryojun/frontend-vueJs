@@ -55,7 +55,7 @@
                                     ลงทะเบียน
                                 </button>
 
-                                <button type="button" class="btn btn-secondary btn-block">
+                                <button type="button" @click="onRedirectToLogin()" class="btn btn-secondary btn-block">
                                     เข้าสู่ระบบ
                                 </button>
                             </div>
@@ -73,6 +73,7 @@
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import VueAxios from "vue-axios";
 import axios from "axios";
+import router from "../router/index"
 
 export default {
     data() {
@@ -115,6 +116,7 @@ export default {
                     .post("api/account/register",this.form)
                     .then(response => {this.onReset()})
                     .catch(err => {this.errorMessage = err.response.data.message});
+                
             }catch (ex) {
                 console.log(ex);
             }
@@ -128,6 +130,10 @@ export default {
                 u_firstname: "",
                 u_lastname: ""
             };
+            this.onRedirectToLogin()
+        },
+        onRedirectToLogin() {
+            router.push({ name: 'Login' })
         }
                 
             }
@@ -165,7 +171,9 @@ h1 {
     width: 100%;
     margin-top: 10px;
 }
-.buttons {
+.buttons
+.router-link
+{
   margin-top: 30px;
   margin-bottom: 50px;
 }
