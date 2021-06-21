@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Axios from 'axios'
+import store from '../store'
 
 const routes = [
   {
@@ -10,6 +12,7 @@ const routes = [
   {
     path: '/about',
     name: 'About',
+    // meta: { auth: true},
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -18,6 +21,7 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
+    // meta: { auth: true},
     component: () => import('../views/Register')
   },
   {
@@ -31,5 +35,15 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+//ตรวจสอบสิทธ์การเข้าถึง
+router.beforeEach((to, from, next) =>{
+  console.log(to.meta.auth)
+  if (!to.meta.auth) return next();
+  store.dispatch('get_user_login')
+  .then(() => next())
+  .catch(() => next({name: 'Login'}))
+})
+
 
 export default router

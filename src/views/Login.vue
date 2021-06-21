@@ -1,5 +1,5 @@
 <template>
-    <div class="register container">
+    <div class="login container">
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -55,6 +55,8 @@
 <script>
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import axios from "axios";
+import router from "../router/index"
+
 export default {
     data() {
         return {
@@ -92,7 +94,9 @@ export default {
             try{
                 axios
                     .post("api/account/login",this.form)
-                    .then(response => {console.log(response.data)})
+                    .then(response => {
+                        this.onRedirectToHome();
+                    })
                     .catch(err => {this.errorMessage = err.response.data.message});
                 
             }catch (ex) {
@@ -107,12 +111,19 @@ export default {
                 u_username: "",
                 u_password: ""
             };
+        },
+        onRedirectToHome() {
+            router.push({ name: "Home" })
         }
     }
 };
 </script>
 
 <style scoped>
+.Login {
+  max-width: 500px;
+  margin: 3% auto;
+}
 .img-logo {
   width: 90%;
   height: 20%;

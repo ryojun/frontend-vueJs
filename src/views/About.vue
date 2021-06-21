@@ -7,6 +7,7 @@
 
 <script>
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import store from '../store'
 
 export default {
   components: {
@@ -22,6 +23,7 @@ export default {
 
       return 'This is required';
     },
-  },
+    
+  }
 };
 </script>
